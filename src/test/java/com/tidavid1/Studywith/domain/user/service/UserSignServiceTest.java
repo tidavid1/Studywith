@@ -4,7 +4,6 @@ import com.tidavid1.Studywith.domain.user.dto.UserLoginRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CIdLoginFailedException;
-import com.tidavid1.Studywith.domain.user.exception.CIdSignupFailedException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,9 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -59,8 +59,6 @@ class UserSignServiceTest {
         String passwd = "test!";
         UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto(id, passwd);
         // Act & Assert
-        assertThrows(CIdLoginFailedException.class, ()->{
-            userSignService.login(userLoginRequestDto);
-        });
+        assertThrows(CIdLoginFailedException.class, ()-> userSignService.login(userLoginRequestDto));
     }
 }
