@@ -4,39 +4,41 @@ import com.tidavid1.Studywith.domain.user.dto.UserLoginRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CIdLoginFailedException;
+import com.tidavid1.Studywith.domain.user.exception.CIdSignupFailedException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+
+@SpringBootTest
 class UserSignServiceTest {
-    @InjectMocks
+    @Autowired
     private UserSignService userSignService;
-    @Mock
+    @Autowired
     private UserRepository userRepository;
+
+    private UserSignupRequestDto userSignupRequestDto;
+
+    @BeforeEach
+    void setup(){
+        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000");
+    }
+    @AfterEach
+    void cleanup(){
+        userRepository.deleteAll();
+    }
 
     @DisplayName("Test signup Success")
     @Test
     void testSignupSuccess() {
         // Arrange
-        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000");
         User expectedUser = userSignupRequestDto.toEntity();
-        Long expectedUserId = 1L;
-        ReflectionTestUtils.setField(expectedUser, "userId", expectedUserId);
-
-        given(userRepository.save(any(User.class))).willReturn(expectedUser);
-        given(userRepository.findByUserId(expectedUserId)).willReturn(Optional.of(expectedUser));
 
         // Act
         Long actualUserId = userSignService.signup(userSignupRequestDto);
@@ -44,21 +46,38 @@ class UserSignServiceTest {
 
         // Assert
         assertNotNull(actualUser);
-        assertEquals(expectedUserId, actualUserId);
         assertEquals(expectedUser.getId(), actualUser.getId());
         assertEquals(expectedUser.getName(), actualUser.getName());
         assertEquals(expectedUser.getPhoneCall(), actualUser.getPhoneCall());
     }
 
+    @DisplayName("Test signup Failed")
+    @Test
+    void testSignupFailed(){
+        // Act
+        userSignService.signup(userSignupRequestDto);
+        // Assert
+        assertThrows(CIdSignupFailedException.class, ()-> userSignService.signup(userSignupRequestDto));
+    }
+
+    @DisplayName("Test Login Success")
+    @Test
+    void testLoginSuccess(){
+        // Arrange
+        Long expectedUserId = userSignService.signup(userSignupRequestDto);
+        // Act
+        Long actualUserId = userSignService.login(new UserLoginRequestDto("test", "test!"));
+        // Assert
+        assertEquals(expectedUserId, actualUserId);
+    }
 
     @DisplayName("Test Login Failed")
     @Test
     void testLoginFail() {
         // Arrange
-        String id = "test";
-        String passwd = "test!";
-        UserLoginRequestDto userLoginRequestDto = new UserLoginRequestDto(id, passwd);
+        userSignService.signup(userSignupRequestDto);
         // Act & Assert
-        assertThrows(CIdLoginFailedException.class, ()-> userSignService.login(userLoginRequestDto));
+        assertThrows(CIdLoginFailedException.class, ()-> userSignService.login(new UserLoginRequestDto("temp", "temp")));
+        assertThrows(CIdLoginFailedException.class, ()->userSignService.login(new UserLoginRequestDto("test", "test!!")));
     }
 }
