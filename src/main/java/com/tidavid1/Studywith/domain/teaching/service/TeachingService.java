@@ -5,6 +5,7 @@ import com.tidavid1.Studywith.domain.teaching.dto.TeachingResponseDto;
 import com.tidavid1.Studywith.domain.teaching.entity.Teaching;
 import com.tidavid1.Studywith.domain.teaching.exception.*;
 import com.tidavid1.Studywith.domain.teaching.repository.TeachingRepository;
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
@@ -23,8 +24,8 @@ public class TeachingService {
 
     @Transactional
     public Long makeClass(TeachingRequestDto teachingRequestDto){
-        User teacher = userRepository.findById(teachingRequestDto.getTeacherId()).orElseThrow(CUserNotFoundException::new);
-        User student = userRepository.findById(teachingRequestDto.getStudentId()).orElseThrow(CUserNotFoundException::new);
+        User teacher = userRepository.findByUserIdWithRole(teachingRequestDto.getTeacherId(), Role.Teacher).orElseThrow(CUserNotFoundException::new);
+        User student = userRepository.findByUserIdWithRole(teachingRequestDto.getStudentId(), Role.Teacher).orElseThrow(CUserNotFoundException::new);
         if (teachingRepository.findByStudentId(teacher, student).isPresent()){
             throw new CTeachingAlreadyExistException();
         }
@@ -49,7 +50,7 @@ public class TeachingService {
 
     @Transactional
     public List<TeachingResponseDto> findAllTeachingByTeacher(Long teacherId){
-        User teacher = userRepository.findById(teacherId).orElseThrow(CUserNotFoundException::new);
+        User teacher = userRepository.findByUserIdWithRole(teacherId, Role.Teacher).orElseThrow(CUserNotFoundException::new);
         return teachingRepository.findByTeacherId(teacher).stream().map(TeachingResponseDto::new).collect(Collectors.toList());
     }
 }
