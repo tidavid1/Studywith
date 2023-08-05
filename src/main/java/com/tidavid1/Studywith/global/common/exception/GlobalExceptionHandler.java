@@ -1,5 +1,8 @@
 package com.tidavid1.Studywith.global.common.exception;
 
+import com.tidavid1.Studywith.domain.teaching.exception.CTeachingAlreadyExistException;
+import com.tidavid1.Studywith.domain.teaching.exception.CTeachingEndDateEarlierThenStartDateException;
+import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundException;
 import com.tidavid1.Studywith.domain.user.exception.CIdLoginFailedException;
 import com.tidavid1.Studywith.domain.user.exception.CIdSignupFailedException;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
@@ -37,6 +40,24 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     protected CommonResult idLoginFailedException(HttpServletRequest request, CIdLoginFailedException e){
         return ResponseFactory.getFailResult(ErrorCode.IdLoginFailed.getCode(), ErrorCode.IdLoginFailed.getMessage());
+    }
+
+    @ExceptionHandler(CTeachingNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResult teachingNotFoundException(HttpServletRequest request, CTeachingNotFoundException e){
+        return ResponseFactory.getFailResult(ErrorCode.TeachingNotFound.getCode(), ErrorCode.TeachingNotFound.getMessage());
+    }
+
+    @ExceptionHandler(CTeachingAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResult teachingAlreadyExistException(HttpServletRequest request, CTeachingAlreadyExistException e){
+        return ResponseFactory.getFailResult(ErrorCode.TeachingAlreadyExist.getCode(), ErrorCode.TeachingAlreadyExist.getMessage());
+    }
+
+    @ExceptionHandler(CTeachingEndDateEarlierThenStartDateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResult teachingEndDateEarlierThenStartDateException(HttpServletRequest request, CTeachingEndDateEarlierThenStartDateException e){
+        return ResponseFactory.getFailResult(ErrorCode.TeachingEndDateEarlierThenStartDate.getCode(), ErrorCode.TeachingEndDateEarlierThenStartDate.getMessage());
     }
 
 }
