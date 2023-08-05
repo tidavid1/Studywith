@@ -2,6 +2,7 @@ package com.tidavid1.Studywith.domain.user.service;
 
 import com.tidavid1.Studywith.domain.user.dto.UserLoginRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CIdLoginFailedException;
 import com.tidavid1.Studywith.domain.user.exception.CIdSignupFailedException;
@@ -27,7 +28,7 @@ class UserSignServiceTest {
 
     @BeforeEach
     void setup(){
-        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000");
+        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000", Role.Student);
     }
     @AfterEach
     void cleanup(){

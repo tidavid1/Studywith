@@ -2,6 +2,7 @@ package com.tidavid1.Studywith.domain.user.controller;
 
 import com.tidavid1.Studywith.domain.user.dto.UserRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserResponseDto;
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.service.UserService;
 import com.tidavid1.Studywith.global.common.response.model.ListResult;
 import com.tidavid1.Studywith.global.common.response.model.SingleResult;
@@ -39,6 +40,16 @@ public class UserController {
     @GetMapping("/users")
     public ListResult<UserResponseDto> findAllUser(){
         return ResponseFactory.getListResult(userService.findAllUser());
+    }
+
+    @Operation(summary = "선생님 유저 전체 검색", description = "선생님 유저 전체를 조회합니다.")
+    public ListResult<UserResponseDto> findAllTeacherUser(){
+        return ResponseFactory.getListResult(userService.findByRole(Role.Teacher));
+    }
+
+    @Operation(summary = "학생 유저 전체 검색", description = "학생 유저 전체를 조회합니다.")
+    public ListResult<UserResponseDto> findAllStudentUser(){
+        return ResponseFactory.getListResult(userService.findByRole(Role.Student));
     }
 
     @Operation(summary = "유저 전화번호 갱신", description = "유저 전화번호를 갱신합니다.")

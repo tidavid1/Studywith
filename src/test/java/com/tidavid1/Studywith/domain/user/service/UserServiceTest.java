@@ -3,6 +3,7 @@ package com.tidavid1.Studywith.domain.user.service;
 import com.tidavid1.Studywith.domain.user.dto.UserRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserResponseDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
@@ -34,7 +35,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setup(){
-        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-1111-1111");
+        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-1111-1111", Role.Teacher);
         expectedUser = userSignupRequestDto.toEntity();
         expectedUserId = userSignService.signup(userSignupRequestDto);
     }
@@ -98,7 +99,7 @@ class UserServiceTest {
     @Test
     void testUpdatePhoneCall(){
         // Arrange
-        UserRequestDto userRequestDto = new UserRequestDto("test", "홍길동","010-1234-5678");
+        UserRequestDto userRequestDto = new UserRequestDto("test", "홍길동","010-1234-5678", Role.Teacher);
         // Act
         Long actualUserId = userService.updatePhoneCall(expectedUserId, userRequestDto);
         UserResponseDto actualUserResponseDto = userService.findByUserId(actualUserId);

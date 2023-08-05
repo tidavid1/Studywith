@@ -1,5 +1,6 @@
 package com.tidavid1.Studywith.domain.user.dto;
 
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class UserSignupRequestDto {
     private String name;
     @Schema(title = "phoneCall", description = "Phone Call", example = "010-1111-1111")
     private String phoneCall;
+    @Schema(title = "role", description = "Role")
+    private Role role;
 
     public User toEntity(){
         return User.builder()
@@ -29,6 +32,7 @@ public class UserSignupRequestDto {
                 .passwd(passwd)
                 .name(name)
                 .phoneCall(phoneCall)
+                .role(role)
                 .build();
     }
 
