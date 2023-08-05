@@ -29,6 +29,10 @@ public class User {
     @Column(nullable = false, length = 30)
     private String phoneCall;
 
+    @Column(nullable = false)
+    @Enumerated
+    private Role role;
+
     @Column
     private Boolean isActive;
 

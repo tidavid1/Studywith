@@ -2,6 +2,7 @@ package com.tidavid1.Studywith.domain.user.service;
 
 import com.tidavid1.Studywith.domain.user.dto.UserRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserResponseDto;
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
@@ -22,10 +23,16 @@ public class UserService {
         User user = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
         return new UserResponseDto(user);
     }
+
     @Transactional
     public UserResponseDto findById(String id){
         User user = userRepository.findById(id).orElseThrow(CUserNotFoundException::new);
         return new UserResponseDto(user);
+    }
+
+    @Transactional
+    public List<UserResponseDto> findByRole(Role role){
+        return userRepository.findByRole(role).stream().map(UserResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
