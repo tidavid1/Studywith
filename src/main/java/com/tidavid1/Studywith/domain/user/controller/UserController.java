@@ -44,8 +44,8 @@ public class UserController {
     @Operation(summary = "유저 전화번호 갱신", description = "유저 전화번호를 갱신합니다.")
     @PutMapping("/user")
     public SingleResult<Long> updatePhoneCall(
-            @Parameter(description = "userId", required = true) @PathVariable Long userId,
-            @Parameter(description = "phoneCall", required = true) @PathVariable String phoneCall
+            @Parameter(description = "userId", required = true) @RequestParam Long userId,
+            @Parameter(description = "phoneCall", required = true) @RequestParam String phoneCall
     ){
         UserRequestDto userRequestDto = UserRequestDto.builder().phoneCall(phoneCall).build();
         return ResponseFactory.getSingleResult(userService.updatePhoneCall(userId, userRequestDto));
