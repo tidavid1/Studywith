@@ -12,8 +12,9 @@ public enum ErrorCode {
     IdLoginFailed(-1002, "가입하지 않은 아이디거나 잘못된 비밀번호 입력"),
     TeachingNotFound(-1003, "수업이 존재하지 않음"),
     TeachingAlreadyExist(-1004, "수업이 이미 존재"),
-    TeachingEndDateEarlierThenStartDate(-1005, "수업 종료 일자가 시작 일자보다 빠르거나 같음");
-
+    TeachingEndDateEarlierThenStartDate(-1005, "수업 종료 일자가 시작 일자보다 빠르거나 같음"),
+    StudyLogNotFound(-1006, "수업 기록이 존재하지 않음"),
+    StudyLogAlreadyExist(-1007, "수업 기록이 이미 존재");
     private final int code;
     private final String message;
 }

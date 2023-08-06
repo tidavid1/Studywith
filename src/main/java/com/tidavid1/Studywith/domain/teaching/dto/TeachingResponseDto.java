@@ -3,20 +3,18 @@ package com.tidavid1.Studywith.domain.teaching.dto;
 import com.tidavid1.Studywith.domain.teaching.entity.Language;
 import com.tidavid1.Studywith.domain.teaching.entity.Teaching;
 import com.tidavid1.Studywith.domain.user.dto.UserResponseDto;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
-@Builder
 public class TeachingResponseDto {
-    private Long teachingId;
-    private UserResponseDto teacher;
-    private UserResponseDto student;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Language language;
+    private final Long teachingId;
+    private final UserResponseDto teacher;
+    private final UserResponseDto student;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final Language language;
 
     public TeachingResponseDto(Teaching teaching){
         this.teachingId = teaching.getTeachingId();

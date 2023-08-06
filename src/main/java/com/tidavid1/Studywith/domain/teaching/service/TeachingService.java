@@ -23,9 +23,9 @@ public class TeachingService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long makeClass(TeachingRequestDto teachingRequestDto){
+    public Long createClass(TeachingRequestDto teachingRequestDto){
         User teacher = userRepository.findByUserIdWithRole(teachingRequestDto.getTeacherId(), Role.Teacher).orElseThrow(CUserNotFoundException::new);
-        User student = userRepository.findByUserIdWithRole(teachingRequestDto.getStudentId(), Role.Teacher).orElseThrow(CUserNotFoundException::new);
+        User student = userRepository.findByUserIdWithRole(teachingRequestDto.getStudentId(), Role.Student).orElseThrow(CUserNotFoundException::new);
         if (teachingRepository.findByStudentId(teacher, student).isPresent()){
             throw new CTeachingAlreadyExistException();
         }
