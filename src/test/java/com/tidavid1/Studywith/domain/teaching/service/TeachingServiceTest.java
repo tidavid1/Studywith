@@ -8,6 +8,7 @@ import com.tidavid1.Studywith.domain.teaching.exception.CTeachingEndDateEarlierT
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundException;
 import com.tidavid1.Studywith.domain.teaching.repository.TeachingRepository;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
+import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
@@ -46,12 +47,14 @@ class TeachingServiceTest {
                 .passwd("teacher!")
                 .name("선생님")
                 .phoneCall("010-1234-5678")
+                .role(Role.Teacher)
                 .build();
         UserSignupRequestDto studentSignupRequestDto = UserSignupRequestDto.builder()
                 .id("student")
                 .passwd("student!")
                 .name("학생")
                 .phoneCall("010-1111-1111")
+                .role(Role.Student)
                 .build();
         teacherUserId = userSignService.signup(teacherSignupRequestDto);
         studentUserId = userSignService.signup(studentSignupRequestDto);

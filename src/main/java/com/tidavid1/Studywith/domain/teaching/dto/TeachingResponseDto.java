@@ -9,7 +9,6 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-@Builder
 public class TeachingResponseDto {
     private Long teachingId;
     private UserResponseDto teacher;
