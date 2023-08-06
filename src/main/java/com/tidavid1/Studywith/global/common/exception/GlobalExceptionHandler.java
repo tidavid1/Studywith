@@ -1,5 +1,7 @@
 package com.tidavid1.Studywith.global.common.exception;
 
+import com.tidavid1.Studywith.domain.studylog.exception.CStudyLogAlreadyExistException;
+import com.tidavid1.Studywith.domain.studylog.exception.CStudyLogNotFoundException;
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingAlreadyExistException;
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingEndDateEarlierThenStartDateException;
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundException;
@@ -60,4 +62,15 @@ public class GlobalExceptionHandler {
         return ResponseFactory.getFailResult(ErrorCode.TeachingEndDateEarlierThenStartDate.getCode(), ErrorCode.TeachingEndDateEarlierThenStartDate.getMessage());
     }
 
+    @ExceptionHandler(CStudyLogNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResult studyLogNotFoundException(HttpServletRequest request, CStudyLogNotFoundException e){
+        return ResponseFactory.getFailResult(ErrorCode.StudyLogNotFound.getCode(), ErrorCode.StudyLogNotFound.getMessage());
+    }
+
+    @ExceptionHandler(CStudyLogAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected CommonResult studyLogAlreadyExistException(HttpServletRequest request, CStudyLogAlreadyExistException e){
+        return ResponseFactory.getFailResult(ErrorCode.StudyLogAlreadyExist.getCode(), ErrorCode.StudyLogAlreadyExist.getMessage());
+    }
 }
