@@ -39,7 +39,7 @@ public class TeachingController {
     public SingleResult<Long> addTeaching(
             @Parameter(description = "Teaching Request Dto", required = true)
             @RequestBody TeachingRequestDto teachingRequestDto){
-        return ResponseFactory.getSingleResult(teachingService.makeClass(teachingRequestDto));
+        return ResponseFactory.getSingleResult(teachingService.createClass(teachingRequestDto));
     }
 
     @Operation(summary = "수업 종료일 지정", description = "수업 종료일 지정")

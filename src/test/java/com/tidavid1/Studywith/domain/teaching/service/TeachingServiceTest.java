@@ -77,7 +77,7 @@ class TeachingServiceTest {
         User student = userRepository.findByUserId(studentUserId).orElseThrow(CUserNotFoundException::new);
         Teaching expectedTeaching = teachingRequestDto.toEntity(teacher, student);
         // Act
-        Long expectedTeachingId = teachingService.makeClass(teachingRequestDto);
+        Long expectedTeachingId = teachingService.createClass(teachingRequestDto);
         Teaching actualTeaching = teachingRepository.findByTeachingId(expectedTeachingId).orElseThrow(CTeachingNotFoundException::new);
         // Assert
         assertNotNull(actualTeaching);
@@ -92,16 +92,16 @@ class TeachingServiceTest {
     @Test
     void testMakeClassFailed(){
         // Arrange
-        teachingService.makeClass(teachingRequestDto);
+        teachingService.createClass(teachingRequestDto);
         // Act & Assert
-        assertThrows(CTeachingAlreadyExistException.class, ()-> teachingService.makeClass(teachingRequestDto));
+        assertThrows(CTeachingAlreadyExistException.class, ()-> teachingService.createClass(teachingRequestDto));
     }
 
     @DisplayName("Test updateEndDate Success")
     @Test
     void testUpdateEndDateSuccess(){
         // Arrange
-        Long expectedTeachingId = teachingService.makeClass(teachingRequestDto);
+        Long expectedTeachingId = teachingService.createClass(teachingRequestDto);
         LocalDate expectedEndDate = LocalDate.now().plusDays(1);
         // Act
         Long actualTeachingId = teachingService.updateEndDate(expectedTeachingId, TeachingRequestDto.builder().endDate(expectedEndDate).build());
@@ -116,7 +116,7 @@ class TeachingServiceTest {
     @Test
     void testUpdateEndDateFailed(){
         // Arrange
-        Long expectedTeachingId = teachingService.makeClass(teachingRequestDto);
+        Long expectedTeachingId = teachingService.createClass(teachingRequestDto);
         LocalDate expectedEndDate = LocalDate.now().minusDays(1);
         // Act & Assert
         assertThrows(CTeachingEndDateEarlierThenStartDateException.class, ()->teachingService.updateEndDate(expectedTeachingId, TeachingRequestDto.builder().endDate(expectedEndDate).build()));
