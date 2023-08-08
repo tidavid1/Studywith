@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
@@ -33,7 +34,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry ->
                                 authorizationManagerRequestMatcherRegistry
-                                        .requestMatchers("/api/signup", "/api/login", "/api/reissue")
+                                        .requestMatchers(new AntPathRequestMatcher("/api/**"))
                                         .permitAll()
                                         .anyRequest()
                                         .hasRole("USER"))
@@ -50,6 +51,10 @@ public class SecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer ignoringWebSecurityCustomizer(){
-        return (web -> web.ignoring().requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/favicon.ico", "/error"));
+        return (web -> web.ignoring()
+                .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**"))
+                .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**"))
+                .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**"))
+                .requestMatchers(new AntPathRequestMatcher("/error")));
     }
 }
