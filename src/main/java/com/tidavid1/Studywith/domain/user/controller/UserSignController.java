@@ -3,6 +3,8 @@ package com.tidavid1.Studywith.domain.user.controller;
 import com.tidavid1.Studywith.domain.user.dto.UserLoginRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
 import com.tidavid1.Studywith.domain.user.service.UserSignService;
+import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
+import com.tidavid1.Studywith.domain.usertoken.dto.TokenRequestDto;
 import com.tidavid1.Studywith.global.common.response.model.SingleResult;
 import com.tidavid1.Studywith.global.common.response.service.ResponseFactory;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,9 +33,17 @@ public class UserSignController {
 
     @Operation(summary = "Login", description = "로그인")
     @PostMapping("/login")
-    public SingleResult<Long> login(
+    public SingleResult<TokenDto> login(
         @Parameter(description = "Login Request DTO", required = true)
         @RequestBody UserLoginRequestDto userLoginRequestDto){
         return ResponseFactory.getSingleResult(userSignService.login(userLoginRequestDto));
+    }
+
+    @Operation(summary = "reissue", description = "Access, Refresh Token 재발급")
+    @PostMapping("/reissue")
+    public SingleResult<TokenDto> reissue(
+            @Parameter(description = "Token Request Dto", required = true)
+            @RequestBody TokenRequestDto tokenRequestDto){
+        return ResponseFactory.getSingleResult(userSignService.reissue(tokenRequestDto));
     }
 }

@@ -7,12 +7,14 @@ import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CIdLoginFailedException;
 import com.tidavid1.Studywith.domain.user.exception.CIdSignupFailedException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
+import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,12 +25,12 @@ class UserSignServiceTest {
     private UserSignService userSignService;
     @Autowired
     private UserRepository userRepository;
-
+    private PasswordEncoder passwordEncoder;
     private UserSignupRequestDto userSignupRequestDto;
 
     @BeforeEach
     void setup(){
-        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000", Role.Student);
+        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000", Role.USER_Student);
     }
     @AfterEach
     void cleanup(){
@@ -39,7 +41,7 @@ class UserSignServiceTest {
     @Test
     void testSignupSuccess() {
         // Arrange
-        User expectedUser = userSignupRequestDto.toEntity();
+        User expectedUser = userSignupRequestDto.toEntity(passwordEncoder);
 
         // Act
         Long actualUserId = userSignService.signup(userSignupRequestDto);
@@ -66,10 +68,8 @@ class UserSignServiceTest {
     void testLoginSuccess(){
         // Arrange
         Long expectedUserId = userSignService.signup(userSignupRequestDto);
-        // Act
-        Long actualUserId = userSignService.login(new UserLoginRequestDto("test", "test!"));
-        // Assert
-        assertEquals(expectedUserId, actualUserId);
+        // Act & Assert
+        TokenDto actualUserToken = userSignService.login(new UserLoginRequestDto("test", "test!"));
     }
 
     @DisplayName("Test Login Failed")

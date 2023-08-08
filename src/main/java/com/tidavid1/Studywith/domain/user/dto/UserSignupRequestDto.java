@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Getter
@@ -26,10 +27,10 @@ public class UserSignupRequestDto {
     @Schema(title = "role", description = "Role")
     private Role role;
 
-    public User toEntity(){
+    public User toEntity(PasswordEncoder passwordEncoder){
         return User.builder()
                 .id(id)
-                .passwd(passwd)
+                .passwd(passwordEncoder.encode(passwd))
                 .name(name)
                 .phoneCall(phoneCall)
                 .role(role)
