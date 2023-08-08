@@ -50,14 +50,14 @@ class StudyLogServiceTest {
                 .passwd("teacher!")
                 .name("선생님")
                 .phoneCall("010-1234-5678")
-                .role(Role.Teacher)
+                .role(Role.USER_Teacher)
                 .build());
         Long studentId = userSignService.signup(UserSignupRequestDto.builder()
                 .id("student")
                 .passwd("student!")
                 .name("학생")
                 .phoneCall("student")
-                .role(Role.Student)
+                .role(Role.USER_Student)
                 .build());
         teachingId = teachingService.createClass(TeachingRequestDto.builder()
                 .teacherId(teacherId)

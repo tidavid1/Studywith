@@ -8,6 +8,7 @@ import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundExcepti
 import com.tidavid1.Studywith.domain.user.exception.CIdLoginFailedException;
 import com.tidavid1.Studywith.domain.user.exception.CIdSignupFailedException;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
+import com.tidavid1.Studywith.domain.usertoken.exception.*;
 import com.tidavid1.Studywith.global.common.response.model.CommonResult;
 import com.tidavid1.Studywith.global.common.response.service.ResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,5 +73,35 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected CommonResult studyLogAlreadyExistException(HttpServletRequest request, CStudyLogAlreadyExistException e){
         return ResponseFactory.getFailResult(ErrorCode.StudyLogAlreadyExist.getCode(), ErrorCode.StudyLogAlreadyExist.getMessage());
+    }
+
+    @ExceptionHandler(CAccessDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected CommonResult accessDeniedException(HttpServletRequest request, CAccessDeniedException e){
+        return ResponseFactory.getFailResult(ErrorCode.AccessDenied.getCode(), ErrorCode.AccessDenied.getMessage());
+    }
+
+    @ExceptionHandler(CAccessTokenExpiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected CommonResult accessTokenExpiredException(HttpServletRequest request, CAccessTokenExpiredException e){
+        return ResponseFactory.getFailResult(ErrorCode.AccessTokenExpired.getCode(), ErrorCode.AccessTokenExpired.getMessage());
+    }
+
+    @ExceptionHandler(CAccessTokenInvalidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected CommonResult accessTokenInvalidException(HttpServletRequest request, CAccessTokenInvalidException e){
+        return ResponseFactory.getFailResult(ErrorCode.AccessTokenInvalid.getCode(), ErrorCode.AccessTokenInvalid.getMessage());
+    }
+
+    @ExceptionHandler(CAuthenticationEntryPointException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e){
+        return ResponseFactory.getFailResult(ErrorCode.AuthenticationEntryPoint.getCode(), ErrorCode.AuthenticationEntryPoint.getMessage());
+    }
+
+    @ExceptionHandler(CRefreshTokenInvalidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected CommonResult refreshTokenInvalidException(HttpServletRequest request, CRefreshTokenInvalidException e){
+        return ResponseFactory.getFailResult(ErrorCode.RefreshTokenInvalid.getCode(), ErrorCode.RefreshTokenInvalid.getMessage());
     }
 }

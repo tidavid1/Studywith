@@ -38,7 +38,7 @@ public class StudyLogController {
         return ResponseFactory.getSingleResult(studyLogService.updateStudyNote(studyLogId, studyLogRequestDto));
     }
 
-    @Operation(summary = "Delete Study Log")
+    @Operation(summary = "Delete StudyLog")
     @DeleteMapping("/studyLog")
     public CommonResult deleteStudyLog(
             @Parameter(description = "studyLogId", required = true)
@@ -47,6 +47,7 @@ public class StudyLogController {
         return ResponseFactory.getSuccessResult();
     }
 
+    @Operation(summary = "수업 기록 리스트", description = "특정 Teaching 수업 기록 리스트를 리턴합니다.")
     @GetMapping("/studyLog")
     public ListResult<StudyLogResponseDto> getAllStudyLogWithTeaching(
             @Parameter(description = "teachingId")
