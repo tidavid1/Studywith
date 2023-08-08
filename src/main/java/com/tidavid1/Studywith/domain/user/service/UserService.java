@@ -11,7 +11,6 @@ import com.tidavid1.Studywith.domain.usertoken.exception.CAccessDeniedException;
 import com.tidavid1.Studywith.domain.usertoken.exception.CAccessTokenInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
