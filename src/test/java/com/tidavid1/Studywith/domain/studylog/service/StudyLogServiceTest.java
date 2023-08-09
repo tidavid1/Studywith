@@ -8,6 +8,7 @@ import com.tidavid1.Studywith.domain.teaching.dto.TeachingRequestDto;
 import com.tidavid1.Studywith.domain.teaching.entity.Language;
 import com.tidavid1.Studywith.domain.teaching.repository.TeachingRepository;
 import com.tidavid1.Studywith.domain.teaching.service.TeachingService;
+import com.tidavid1.Studywith.domain.user.dto.UserLoginRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
 import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
@@ -43,6 +44,7 @@ class StudyLogServiceTest {
 
     private Long teachingId;
     private StudyLogRequestDto studyLogRequestDto;
+    private String accessToken;
     @BeforeEach
     void setup(){
         Long teacherId = userSignService.signup(UserSignupRequestDto.builder()
@@ -50,16 +52,22 @@ class StudyLogServiceTest {
                 .passwd("teacher!")
                 .name("선생님")
                 .phoneCall("010-1234-5678")
-                .role(Role.USER_Teacher)
+                .role(Role.ROLE_Teacher)
                 .build());
         Long studentId = userSignService.signup(UserSignupRequestDto.builder()
                 .id("student")
                 .passwd("student!")
                 .name("학생")
                 .phoneCall("student")
-                .role(Role.USER_Student)
+                .role(Role.ROLE_Student)
                 .build());
-        teachingId = teachingService.createClass(TeachingRequestDto.builder()
+        accessToken = userSignService.login(
+                UserLoginRequestDto.builder()
+                        .id("teacher")
+                        .passwd("teacher!")
+                        .build()
+        ).getAccessToken();
+        teachingId = teachingService.createClass(accessToken,TeachingRequestDto.builder()
                 .teacherId(teacherId)
                 .studentId(studentId)
                 .startDate(LocalDate.now())

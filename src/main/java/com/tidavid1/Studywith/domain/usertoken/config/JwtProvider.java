@@ -2,6 +2,7 @@ package com.tidavid1.Studywith.domain.usertoken.config;
 
 import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
+import com.tidavid1.Studywith.domain.usertoken.exception.CAccessTokenExpiredException;
 import com.tidavid1.Studywith.domain.usertoken.exception.CAuthenticationEntryPointException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -93,7 +94,7 @@ public class JwtProvider {
         try{
             return !parseClaims(token).getExpiration().before(currentDate);
         } catch (Exception e){
-            return false;
+            throw new CAccessTokenExpiredException();
         }
     }
 
