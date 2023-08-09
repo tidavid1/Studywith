@@ -33,7 +33,7 @@ public class UserService {
     @Transactional
     public UserResponseDto findByUserId(String accessToken, Long userId){
         Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.USER_Student)){
+        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_Student)){
             throw new CAccessDeniedException();
         }
         User user = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
@@ -43,7 +43,7 @@ public class UserService {
     @Transactional
     public UserResponseDto findById(String accessToken, String id){
         Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.USER_Student)){
+        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_Student)){
             throw new CAccessDeniedException();
         }
         User user = userRepository.findById(id).orElseThrow(CUserNotFoundException::new);
@@ -53,7 +53,7 @@ public class UserService {
     @Transactional
     public List<UserResponseDto> findByRole(String accessToken, Role role){
         Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.ADMIN)){
+        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_ADMIN)){
             return userRepository.findByRole(role).stream().map(UserResponseDto::new).collect(Collectors.toList());
         }else{
             throw new CAccessDeniedException();
@@ -63,7 +63,7 @@ public class UserService {
     @Transactional
     public List<UserResponseDto> findAllUser(String accessToken){
         Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.ADMIN)){
+        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_ADMIN)){
             return userRepository.findAll().stream().map(UserResponseDto::new).collect(Collectors.toList());
         }else{
             throw new CAccessDeniedException();

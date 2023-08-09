@@ -30,7 +30,7 @@ class UserSignServiceTest {
 
     @BeforeEach
     void setup(){
-        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000", Role.USER_Student);
+        userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-0000-0000", Role.ROLE_Student);
     }
     @AfterEach
     void cleanup(){

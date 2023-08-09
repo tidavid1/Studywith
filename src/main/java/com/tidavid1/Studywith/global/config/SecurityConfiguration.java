@@ -31,13 +31,11 @@ public class SecurityConfiguration {
                         httpSecuritySessionManagementConfigurer ->
                                 httpSecuritySessionManagementConfigurer
                                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        authorizationManagerRequestMatcherRegistry ->
-                                authorizationManagerRequestMatcherRegistry
-                                        .requestMatchers(new AntPathRequestMatcher("/api/**"))
-                                        .permitAll()
-                                        .anyRequest()
-                                        .hasRole("USER"))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(new AntPathRequestMatcher("/api/signup")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).hasAnyRole("ADMIN", "Teacher", "Student").anyRequest().authenticated())
                 .exceptionHandling(
                         httpSecurityExceptionHandlingConfigurer ->
                                 httpSecurityExceptionHandlingConfigurer
@@ -54,7 +52,6 @@ public class SecurityConfiguration {
         return (web -> web.ignoring()
                 .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**"))
                 .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**"))
-                .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**"))
-                .requestMatchers(new AntPathRequestMatcher("/error")));
+                .requestMatchers(new AntPathRequestMatcher("/swagger-resources/**")));
     }
 }

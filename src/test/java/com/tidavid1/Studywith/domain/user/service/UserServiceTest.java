@@ -40,7 +40,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setup(){
-        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-1111-1111", Role.USER_Teacher);
+        UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-1111-1111", Role.ROLE_Teacher);
         expectedUser = userSignupRequestDto.toEntity(passwordEncoder);
         expectedUserId = userSignService.signup(userSignupRequestDto);
         tokenDto = userSignService.login(UserLoginRequestDto.builder().id("test").passwd("test!").build());
@@ -106,7 +106,7 @@ class UserServiceTest {
     @Test
     void testUpdatePhoneCall(){
         // Arrange
-        UserRequestDto userRequestDto = new UserRequestDto("test", "홍길동","010-1234-5678", Role.USER_Teacher);
+        UserRequestDto userRequestDto = new UserRequestDto("test", "홍길동","010-1234-5678", Role.ROLE_Teacher);
         TokenDto tokenDto = userSignService.login(UserLoginRequestDto.builder()
                         .id("test")
                         .passwd("test!")

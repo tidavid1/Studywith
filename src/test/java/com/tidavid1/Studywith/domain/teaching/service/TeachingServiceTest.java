@@ -47,14 +47,14 @@ class TeachingServiceTest {
                 .passwd("teacher!")
                 .name("선생님")
                 .phoneCall("010-1234-5678")
-                .role(Role.USER_Teacher)
+                .role(Role.ROLE_Teacher)
                 .build();
         UserSignupRequestDto studentSignupRequestDto = UserSignupRequestDto.builder()
                 .id("student")
                 .passwd("student!")
                 .name("학생")
                 .phoneCall("010-1111-1111")
-                .role(Role.USER_Student)
+                .role(Role.ROLE_Student)
                 .build();
         teacherUserId = userSignService.signup(teacherSignupRequestDto);
         studentUserId = userSignService.signup(studentSignupRequestDto);
