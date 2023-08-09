@@ -7,12 +7,14 @@ import com.tidavid1.Studywith.domain.teaching.exception.CTeachingAlreadyExistExc
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingEndDateEarlierThenStartDateException;
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundException;
 import com.tidavid1.Studywith.domain.teaching.repository.TeachingRepository;
+import com.tidavid1.Studywith.domain.user.dto.UserLoginRequestDto;
 import com.tidavid1.Studywith.domain.user.dto.UserSignupRequestDto;
 import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
 import com.tidavid1.Studywith.domain.user.service.UserSignService;
+import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +42,7 @@ class TeachingServiceTest {
     private Long teacherUserId;
     private Long studentUserId;
     private TeachingRequestDto teachingRequestDto;
+    private String accessToken;
     @BeforeEach
     void setup(){
         UserSignupRequestDto teacherSignupRequestDto = UserSignupRequestDto.builder()
@@ -64,6 +67,10 @@ class TeachingServiceTest {
                 .startDate(LocalDate.now())
                 .language(Language.Java)
                 .build();
+        accessToken = userSignService.login(UserLoginRequestDto.builder()
+                .id("teacher")
+                .passwd("teacher!")
+                .build()).getAccessToken();
     }
 
     @AfterEach
@@ -80,7 +87,7 @@ class TeachingServiceTest {
         User student = userRepository.findByUserId(studentUserId).orElseThrow(CUserNotFoundException::new);
         Teaching expectedTeaching = teachingRequestDto.toEntity(teacher, student);
         // Act
-        Long expectedTeachingId = teachingService.createClass(teachingRequestDto);
+        Long expectedTeachingId = teachingService.createClass(accessToken, teachingRequestDto);
         Teaching actualTeaching = teachingRepository.findByTeachingId(expectedTeachingId).orElseThrow(CTeachingNotFoundException::new);
         // Assert
         assertNotNull(actualTeaching);
@@ -95,19 +102,19 @@ class TeachingServiceTest {
     @Test
     void testMakeClassFailed(){
         // Arrange
-        teachingService.createClass(teachingRequestDto);
+        teachingService.createClass(accessToken, teachingRequestDto);
         // Act & Assert
-        assertThrows(CTeachingAlreadyExistException.class, ()-> teachingService.createClass(teachingRequestDto));
+        assertThrows(CTeachingAlreadyExistException.class, ()-> teachingService.createClass(accessToken, teachingRequestDto));
     }
 
     @DisplayName("Test updateEndDate Success")
     @Test
     void testUpdateEndDateSuccess(){
         // Arrange
-        Long expectedTeachingId = teachingService.createClass(teachingRequestDto);
+        Long expectedTeachingId = teachingService.createClass(accessToken, teachingRequestDto);
         LocalDate expectedEndDate = LocalDate.now().plusDays(1);
         // Act
-        Long actualTeachingId = teachingService.updateEndDate(expectedTeachingId, TeachingRequestDto.builder().endDate(expectedEndDate).build());
+        Long actualTeachingId = teachingService.updateEndDate(accessToken, expectedTeachingId, TeachingRequestDto.builder().endDate(expectedEndDate).build());
         Teaching actualTeaching = teachingRepository.findByTeachingId(actualTeachingId).orElseThrow(CTeachingNotFoundException::new);
         // Assert
         assertNotNull(actualTeaching);
@@ -119,10 +126,10 @@ class TeachingServiceTest {
     @Test
     void testUpdateEndDateFailed(){
         // Arrange
-        Long expectedTeachingId = teachingService.createClass(teachingRequestDto);
+        Long expectedTeachingId = teachingService.createClass(accessToken, teachingRequestDto);
         LocalDate expectedEndDate = LocalDate.now().minusDays(1);
         // Act & Assert
-        assertThrows(CTeachingEndDateEarlierThenStartDateException.class, ()->teachingService.updateEndDate(expectedTeachingId, TeachingRequestDto.builder().endDate(expectedEndDate).build()));
+        assertThrows(CTeachingEndDateEarlierThenStartDateException.class, ()->teachingService.updateEndDate(accessToken, expectedTeachingId, TeachingRequestDto.builder().endDate(expectedEndDate).build()));
     }
 
 }
