@@ -32,8 +32,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto findByUserId(String accessToken, Long userId){
-        Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_Student)){
+        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_Student)){
             throw new CAccessDeniedException();
         }
         User user = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
@@ -42,8 +41,7 @@ public class UserService {
 
     @Transactional
     public UserResponseDto findById(String accessToken, String id){
-        Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_Student)){
+        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_Student)){
             throw new CAccessDeniedException();
         }
         User user = userRepository.findById(id).orElseThrow(CUserNotFoundException::new);
@@ -52,8 +50,7 @@ public class UserService {
 
     @Transactional
     public List<UserResponseDto> findByRole(String accessToken, Role role){
-        Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_ADMIN)){
+        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_ADMIN)){
             return userRepository.findByRole(role).stream().map(UserResponseDto::new).collect(Collectors.toList());
         }else{
             throw new CAccessDeniedException();
@@ -62,8 +59,7 @@ public class UserService {
 
     @Transactional
     public List<UserResponseDto> findAllUser(String accessToken){
-        Authentication authentication = getAuthByAccessToken(accessToken);
-        if(((User) authentication.getPrincipal()).getRole().equals(Role.ROLE_ADMIN)){
+        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_ADMIN)){
             return userRepository.findAll().stream().map(UserResponseDto::new).collect(Collectors.toList());
         }else{
             throw new CAccessDeniedException();
@@ -72,15 +68,13 @@ public class UserService {
 
     @Transactional
     public void updatePhoneCall(String accessToken, UserRequestDto userRequestDto){
-        Authentication authentication = getAuthByAccessToken(accessToken);
-        User user = userRepository.findByUserId(((User) authentication.getPrincipal()).getUserId()).orElseThrow(CUserNotFoundException::new);
+        User user = userRepository.findByUserId(((User) getAuthByAccessToken(accessToken).getPrincipal()).getUserId()).orElseThrow(CUserNotFoundException::new);
         user.updatePhoneCall(userRequestDto.getPhoneCall());
     }
 
     @Transactional
     public UserResponseDto findByAccessToken(String accessToken){
-        Authentication authentication = getAuthByAccessToken(accessToken);
-        return new UserResponseDto(userRepository.findByUserId(((User) authentication.getPrincipal()).getUserId()).orElseThrow(CUserNotFoundException::new));
+        return new UserResponseDto(userRepository.findByUserId(((User) getAuthByAccessToken(accessToken).getPrincipal()).getUserId()).orElseThrow(CUserNotFoundException::new));
     }
 
 }
