@@ -47,9 +47,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// Mockito
 	testImplementation 'org.mockito:mockito-junit-jupiter:5.4.0'
-	// h2
-	implementation 'com.h2database:h2:2.2.220'
-	runtimeOnly 'com.h2database:h2'
+	// Mysql
+	implementation 'mysql:mysql-connector-java:8.0.32'
+
 }
 
 tasks.named('test') {
