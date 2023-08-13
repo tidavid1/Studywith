@@ -30,8 +30,10 @@ public class RefreshToken {
     }
 
     @Builder
-    public RefreshToken(Long refreshTokenKey, String refreshToken){
+    public RefreshToken(Long refreshTokenKey, String refreshToken, LocalDate createdDate){
         this.refreshTokenKey = refreshTokenKey;
         this.refreshToken = refreshToken;
+        this.createdDate = createdDate;
+
     }
 }
