@@ -51,7 +51,7 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.32'
 	// AWS SDK
 	implementation platform('software.amazon.awssdk:bom:2.20.56')
-	implementation 'software.amazon.awssdk:lambda'
+	implementation 'software.amazon.awssdk:ec2'
 }
 
 tasks.named('test') {
