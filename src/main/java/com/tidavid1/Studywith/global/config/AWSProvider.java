@@ -11,8 +11,6 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 
-import java.util.Collections;
-
 @RequiredArgsConstructor
 @Configuration
 public class AWSProvider {
@@ -21,6 +19,15 @@ public class AWSProvider {
 
     @Value("${aws.key.secret}")
     private String secretAccessKey;
+
+    @Value("${aws.ec2.keypair}")
+    private String keyPairName;
+
+    @Value("${aws.ec2.securityGroupId}")
+    private String securityGroupId;
+
+    @Value("${aws.ec2.ami}")
+    private String ami;
 
     private Ec2Client ec2Client;
 
@@ -36,32 +43,62 @@ public class AWSProvider {
 
     public String createEC2Instance(){
         RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
-                // TODO: need Image, instanceType, etc...
+                .instanceType(InstanceType.T2_MICRO)
+                .imageId(ami)
+                .keyName(keyPairName)
+                .securityGroupIds(securityGroupId)
+                .maxCount(1)
+                .minCount(1)
                 .build();
 
         RunInstancesResponse runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
         return runInstancesResponse.instances().get(0).instanceId();
     }
 
-    public void startEC2Instance(String instanceId){
-        StartInstancesResponse startInstancesResponse = ec2Client.startInstances(
+    public String startEC2Instance(String instanceId){
+        ec2Client.startInstances(
                 StartInstancesRequest.builder()
                         .instanceIds(instanceId)
                         .build()
         );
+        return getEC2InstanceInformation(instanceId);
     }
 
-    public void getEC2InstanceInformation(String instanceId){
-        DescribeInstancesResponse describeInstancesResponse = ec2Client.describeInstances(
-                DescribeInstancesRequest.builder()
+    public String getEC2InstanceInformation(String instanceId){
+        boolean ipAddrExist = false;
+        String ipAddr = null;
+        while(!ipAddrExist){
+            DescribeInstancesResponse describeInstancesResponse = ec2Client.describeInstances(
+                    DescribeInstancesRequest.builder()
+                            .instanceIds(instanceId)
+                            .build()
+            );
+            Instance instance = describeInstancesResponse.reservations().get(0).instances().get(0);
+            if (instance.publicIpAddress() != null){
+                ipAddrExist = true;
+                ipAddr = instance.publicIpAddress();
+            }else{
+                try{
+                    Thread.sleep(3000);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        return ipAddr;
+    }
+
+    public void stopEC2Instance(String instanceId){
+        ec2Client.stopInstances(
+                StopInstancesRequest.builder()
                         .instanceIds(instanceId)
                         .build()
         );
     }
 
-    public void stopEC2Instance(String instanceId){
-        StopInstancesResponse stopInstancesResponse = ec2Client.stopInstances(
-                StopInstancesRequest.builder()
+    public void terminateEC2Instance(String instanceId){
+        ec2Client.terminateInstances(
+                TerminateInstancesRequest.builder()
                         .instanceIds(instanceId)
                         .build()
         );
