@@ -85,7 +85,7 @@ class TeachingServiceTest {
         // Arrange
         User teacher = userRepository.findByUserId(teacherUserId).orElseThrow(CUserNotFoundException::new);
         User student = userRepository.findByUserId(studentUserId).orElseThrow(CUserNotFoundException::new);
-        Teaching expectedTeaching = teachingRequestDto.toEntity(teacher, student);
+        Teaching expectedTeaching = teachingRequestDto.toEntity(teacher, student, null);
         // Act
         Long expectedTeachingId = teachingService.createClass(accessToken, teachingRequestDto);
         Teaching actualTeaching = teachingRepository.findByTeachingId(expectedTeachingId).orElseThrow(CTeachingNotFoundException::new);
