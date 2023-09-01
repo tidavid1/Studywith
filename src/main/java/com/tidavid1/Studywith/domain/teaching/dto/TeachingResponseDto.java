@@ -12,6 +12,7 @@ public class TeachingResponseDto {
     private final Long teachingId;
     private final UserResponseDto teacher;
     private final UserResponseDto student;
+    private final String instanceId;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Language language;
@@ -20,6 +21,7 @@ public class TeachingResponseDto {
         this.teachingId = teaching.getTeachingId();
         this.teacher = new UserResponseDto(teaching.getTeacher());
         this.student = new UserResponseDto(teaching.getStudent());
+        this.instanceId = teaching.getInstanceId();
         this.startDate = teaching.getStartDate();
         this.endDate = teaching.getEndDate();
         this.language = teaching.getLanguage();

@@ -29,6 +29,9 @@ public class Teaching {
     private User student;
 
     @Column(nullable = false)
+    private String instanceId;
+
+    @Column(nullable = false)
     private LocalDate startDate;
 
     @Column
