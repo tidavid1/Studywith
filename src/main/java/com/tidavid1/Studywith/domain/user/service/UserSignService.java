@@ -42,7 +42,9 @@ public class UserSignService {
         if(!passwordEncoder.matches(userLoginRequestDto.getPasswd(), user.getPassword())){
             throw new CIdLoginFailedException();
         }
-        return jwtProvider.createToken(user.getUserId(), user.getRole());
+        TokenDto tokenDto = jwtProvider.createToken(user.getUserId(), user.getRole());
+        refreshTokenRepository.save(tokenDto.toEntity(user));
+        return tokenDto;
     }
 
     @Transactional
@@ -52,7 +54,7 @@ public class UserSignService {
         }
         String accessToken = tokenRequestDto.getAccessToken();
         Authentication authentication = jwtProvider.getAuthentication(accessToken);
-        User user = userRepository.findByUserId(Long.parseLong(authentication.getName())).orElseThrow(CRefreshTokenInvalidException::new);
+        User user = userRepository.findByUserId(((User) authentication.getPrincipal()).getUserId()).orElseThrow(CRefreshTokenInvalidException::new);
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshTokenKey(user.getUserId()).orElseThrow(CRefreshTokenInvalidException::new);
         if(!refreshToken.getRefreshToken().equals(tokenRequestDto.getRefreshToken())){
             throw new CRefreshTokenInvalidException();

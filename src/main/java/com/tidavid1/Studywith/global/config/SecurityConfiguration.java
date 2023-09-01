@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(new AntPathRequestMatcher("/api/signup")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/reissue")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/**")).hasAnyRole("ADMIN", "Teacher", "Student").anyRequest().authenticated())
                 .exceptionHandling(
