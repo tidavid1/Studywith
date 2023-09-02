@@ -2,7 +2,6 @@ package com.tidavid1.Studywith.domain.studylog.controller;
 
 import com.tidavid1.Studywith.domain.studylog.dto.StudyLogRequestDto;
 import com.tidavid1.Studywith.domain.studylog.dto.StudyLogResponseDto;
-import com.tidavid1.Studywith.domain.studylog.entity.StudyLog;
 import com.tidavid1.Studywith.domain.studylog.service.StudyLogService;
 import com.tidavid1.Studywith.global.common.response.model.CommonResult;
 import com.tidavid1.Studywith.global.common.response.model.ListResult;
