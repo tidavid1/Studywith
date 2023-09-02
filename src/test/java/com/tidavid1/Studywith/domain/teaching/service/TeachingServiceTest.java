@@ -14,7 +14,6 @@ import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
 import com.tidavid1.Studywith.domain.user.service.UserSignService;
-import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

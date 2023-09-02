@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "UserController")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
 
@@ -30,7 +30,7 @@ public class UserController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "userId 기반 유저 단건 검색", description = "userId(Long)로 유저를 조회합니다.")
-    @GetMapping("/user/userId/{userId}")
+    @GetMapping("/userId/{userId}")
     public SingleResult<UserResponseDto> findUserByUserId(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "userId", required = true) @PathVariable Long userId
@@ -45,7 +45,7 @@ public class UserController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "id 기반 유저 단건 검색", description = "id(String)로 유저를 조회합니다.")
-    @GetMapping("/user/id/{id}")
+    @GetMapping("/id/{id}")
     public SingleResult<UserResponseDto> findUserById(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "id", required = true) @PathVariable String id
@@ -60,7 +60,7 @@ public class UserController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "유저 전체 검색", description = "유저 전체를 조회합니다.")
-    @GetMapping("/users")
+    @GetMapping("/find")
     public ListResult<UserResponseDto> findAllUser(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         return ResponseFactory.getListResult(userService.findAllUser(accessToken));
     }
@@ -72,7 +72,7 @@ public class UserController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "Role 유저 전체 검색", description = "Role에 따른 유저들을 조회합니다.")
-    @GetMapping("/users/role/{role}")
+    @GetMapping("/find/role/{role}")
     public ListResult<UserResponseDto> findRoleUsers(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "role", required = true) @PathVariable Role role){
@@ -87,7 +87,7 @@ public class UserController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "유저 전화번호 갱신", description = "유저 전화번호를 갱신합니다.")
-    @PutMapping("/user")
+    @PutMapping("")
     public CommonResult updatePhoneCall(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "phoneCall", required = true) @RequestParam String phoneCall
