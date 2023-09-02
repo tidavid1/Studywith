@@ -14,7 +14,6 @@ import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
 import com.tidavid1.Studywith.domain.user.service.UserSignService;
-import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -85,7 +84,7 @@ class TeachingServiceTest {
         // Arrange
         User teacher = userRepository.findByUserId(teacherUserId).orElseThrow(CUserNotFoundException::new);
         User student = userRepository.findByUserId(studentUserId).orElseThrow(CUserNotFoundException::new);
-        Teaching expectedTeaching = teachingRequestDto.toEntity(teacher, student);
+        Teaching expectedTeaching = teachingRequestDto.toEntity(teacher, student, null);
         // Act
         Long expectedTeachingId = teachingService.createClass(accessToken, teachingRequestDto);
         Teaching actualTeaching = teachingRepository.findByTeachingId(expectedTeachingId).orElseThrow(CTeachingNotFoundException::new);

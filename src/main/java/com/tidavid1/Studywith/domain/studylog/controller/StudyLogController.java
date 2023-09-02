@@ -2,7 +2,6 @@ package com.tidavid1.Studywith.domain.studylog.controller;
 
 import com.tidavid1.Studywith.domain.studylog.dto.StudyLogRequestDto;
 import com.tidavid1.Studywith.domain.studylog.dto.StudyLogResponseDto;
-import com.tidavid1.Studywith.domain.studylog.entity.StudyLog;
 import com.tidavid1.Studywith.domain.studylog.service.StudyLogService;
 import com.tidavid1.Studywith.global.common.response.model.CommonResult;
 import com.tidavid1.Studywith.global.common.response.model.ListResult;
@@ -17,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "StudyLogController")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/studyLog")
 public class StudyLogController {
     private final StudyLogService studyLogService;
 
     @Operation(summary = "Study Log 추가", description = "Study Log를 추가합니다.")
-    @PostMapping("/studyLog")
+    @PostMapping("")
     public SingleResult<Long> addStudyLog(
             @Parameter(description = "StudyLog Request Dto", required = true)
             @RequestBody StudyLogRequestDto studyLogRequestDto){
@@ -30,7 +29,7 @@ public class StudyLogController {
     }
 
     @Operation(summary = "Study Note Update")
-    @PutMapping("/studyLog/studyNote")
+    @PutMapping("/studyNote")
     public SingleResult<Long> updateStudyNote(
             @Parameter(description = "studyLogId", required = true) @RequestParam Long studyLogId,
             @Parameter(description = "studyNote", required = true) @RequestParam String studyNote){
@@ -39,7 +38,7 @@ public class StudyLogController {
     }
 
     @Operation(summary = "Delete StudyLog")
-    @DeleteMapping("/studyLog")
+    @DeleteMapping("")
     public CommonResult deleteStudyLog(
             @Parameter(description = "studyLogId", required = true)
             @RequestBody StudyLogRequestDto studyLogRequestDto){

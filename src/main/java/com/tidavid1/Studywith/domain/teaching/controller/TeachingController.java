@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Tag(name = "TeachingController")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/teaching")
 public class TeachingController {
     private final TeachingService teachingService;
 
@@ -30,7 +30,7 @@ public class TeachingController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "수업 전체 검색", description = "수업 전체를 조회합니다.")
-    @GetMapping("/teachings")
+    @GetMapping("/find")
     public ListResult<TeachingResponseDto> findAllTeaching(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         return ResponseFactory.getListResult(teachingService.findAllTeaching(accessToken));
     }
@@ -42,7 +42,7 @@ public class TeachingController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "선생님 수업 검색", description = "특정 선생님이 진행하는 수업 리스트를 조회합니다.")
-    @GetMapping("/teaching/teacherId/{teacherId}")
+    @GetMapping("/teacherId/{teacherId}")
     public ListResult<TeachingResponseDto> findAllTeachingByTeacher(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "teacherId", required = true) @PathVariable Long teacherId){
@@ -56,7 +56,7 @@ public class TeachingController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "수업 추가", description = "수업 추가")
-    @PostMapping("/teaching")
+    @PostMapping("")
     public SingleResult<Long> addTeaching(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "Teaching Request Dto", required = true)
@@ -71,7 +71,7 @@ public class TeachingController {
             schema = @Schema(type = "string"),
             in = ParameterIn.HEADER)
     @Operation(summary = "수업 종료일 지정", description = "수업 종료일 지정")
-    @PutMapping("/teaching/endDate")
+    @PutMapping("/endDate")
     public SingleResult<Long> updateEndDate(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "teachingId", required = true) @RequestParam Long teachingId,

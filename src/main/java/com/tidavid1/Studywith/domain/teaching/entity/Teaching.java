@@ -28,6 +28,9 @@ public class Teaching {
     @JoinColumn(referencedColumnName = "userId")
     private User student;
 
+    @Column
+    private String instanceId;
+
     @Column(nullable = false)
     private LocalDate startDate;
 
@@ -40,5 +43,9 @@ public class Teaching {
 
     public void updateEndDate(LocalDate endDate){
         this.endDate = endDate;
+    }
+
+    public void terminateInstanceId(){
+        this.instanceId = null;
     }
 }

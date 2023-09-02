@@ -40,3 +40,4 @@ out/
 /src/main/resources/security.properties
 /src/main/resources/database.properties
 /src/main/resources/aws.properties
+/src/main/resources/*.pem

@@ -12,6 +12,7 @@ import com.tidavid1.Studywith.domain.user.repository.UserRepository;
 import com.tidavid1.Studywith.domain.usertoken.config.JwtProvider;
 import com.tidavid1.Studywith.domain.usertoken.exception.CAccessDeniedException;
 import com.tidavid1.Studywith.domain.usertoken.exception.CAccessTokenInvalidException;
+import com.tidavid1.Studywith.global.config.AWSProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class TeachingService {
     private final TeachingRepository teachingRepository;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+    private final AWSProvider awsProvider;
 
     private Authentication getAuthByAccessToken(String accessToken) {
         if (!jwtProvider.validationToken(accessToken)) {
@@ -44,7 +46,9 @@ public class TeachingService {
         if (teachingRepository.findByStudentId(teacher, student).isPresent()){
             throw new CTeachingAlreadyExistException();
         }
-        return teachingRepository.save(teachingRequestDto.toEntity(teacher, student)).getTeachingId();
+        String instanceId = awsProvider.createEC2Instance();
+        awsProvider.stopEC2Instance(instanceId);
+        return teachingRepository.save(teachingRequestDto.toEntity(teacher, student, instanceId)).getTeachingId();
     }
 
     @Transactional

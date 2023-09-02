@@ -21,10 +21,11 @@ public class TeachingRequestDto {
     private LocalDate endDate;
     private Language language;
 
-    public Teaching toEntity(User teacher, User student){
+    public Teaching toEntity(User teacher, User student, String instanceId){
         return Teaching.builder()
                 .teacher(teacher)
                 .student(student)
+                .instanceId(instanceId)
                 .startDate(startDate)
                 .endDate(endDate)
                 .language(language)
