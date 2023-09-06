@@ -22,5 +22,13 @@ StudyWith: Cloud Server 기반 1:1 코딩 과외 서비스
 - <b>Cloud</b>    
   <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> 
 
-### Contributor
-작성중
+### Contribute
+| Name    | <center>[@tidavid1](https://github.com/tidavid1)</center>|<center>[@Retriever_OH](https://github.com/hyuk9833)</center>
+| ------- | --------------------------------------------- | ------------------------------------ |
+| Profile | <img width="150px" src="https://github.com/tidavid1.png" />|<img width="150px" src="https://github.com/hyuk9833.png" />|
+| Role    | <center>Backend & DevOps</center>   | <center>Frontend</center>    |
+
+
+### Repository
+- 작업중
+[]()
