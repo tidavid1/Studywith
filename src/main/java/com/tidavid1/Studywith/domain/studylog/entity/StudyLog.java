@@ -22,7 +22,7 @@ public class StudyLog {
     private Long studyLogId;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Teaching.class)
-    @JoinColumn(referencedColumnName = "teachingId")
+    @JoinColumn(referencedColumnName = "teaching_id")
     private Teaching teaching;
 
     @Column(nullable = false)
@@ -31,7 +31,7 @@ public class StudyLog {
     @Column(nullable = false)
     private LocalDate studyDate;
 
-    public void updateStudyNote(String studyNote){
+    public void updateStudyNote(String studyNote) {
         this.studyNote = studyNote;
     }
 }

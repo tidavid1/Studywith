@@ -14,7 +14,7 @@ public class StudyLogResponseDto {
     private String studyNote;
     private LocalDate studyDate;
 
-    public StudyLogResponseDto(StudyLog studyLog){
+    public StudyLogResponseDto(StudyLog studyLog) {
         this.studyLogId = studyLog.getStudyLogId();
         this.teaching = new TeachingResponseDto(studyLog.getTeaching());
         this.studyNote = studyLog.getStudyNote();

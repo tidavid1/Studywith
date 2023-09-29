@@ -23,30 +23,30 @@ public class StudyLogService {
     private final TeachingRepository teachingRepository;
 
     @Transactional
-    public Long createStudyLog(StudyLogRequestDto studyLogRequestDto){
+    public Long createStudyLog(StudyLogRequestDto studyLogRequestDto) {
         Teaching teaching = teachingRepository.findByTeachingId(studyLogRequestDto.getTeachingId()).orElseThrow(CTeachingNotFoundException::new);
-        if (studyLogRepository.findByTeachingWithStudyDate(teaching, studyLogRequestDto.getStudyDate()).isPresent()){
+        if (studyLogRepository.findByTeachingWithStudyDate(teaching, studyLogRequestDto.getStudyDate()).isPresent()) {
             throw new CStudyLogAlreadyExistException();
         }
         return studyLogRepository.save(studyLogRequestDto.toEntity(teaching)).getStudyLogId();
     }
 
     @Transactional
-    public Long updateStudyNote(Long studyLogId, StudyLogRequestDto studyLogRequestDto){
+    public Long updateStudyNote(Long studyLogId, StudyLogRequestDto studyLogRequestDto) {
         StudyLog studyLog = studyLogRepository.findByStudyLogId(studyLogId).orElseThrow(CStudyLogNotFoundException::new);
         studyLog.updateStudyNote(studyLogRequestDto.getStudyNote());
         return studyLog.getStudyLogId();
     }
 
     @Transactional
-    public List<StudyLogResponseDto> getStudyLogWithTeaching(Long teachingId){
+    public List<StudyLogResponseDto> getStudyLogWithTeaching(Long teachingId) {
         Teaching teaching = teachingRepository.findByTeachingId(teachingId).orElseThrow(CTeachingNotFoundException::new);
         return studyLogRepository.findAllStudyLogWithTeaching(teaching).stream().map(StudyLogResponseDto::new).collect(Collectors.toList());
     }
 
 
     @Transactional
-    public void removeStudyLog(StudyLogRequestDto studyLogRequestDto){
+    public void removeStudyLog(StudyLogRequestDto studyLogRequestDto) {
         Teaching teaching = teachingRepository.findByTeachingId(studyLogRequestDto.getTeachingId()).orElseThrow(CTeachingNotFoundException::new);
         StudyLog studyLog = studyLogRepository.findByTeachingWithStudyDate(teaching, studyLogRequestDto.getStudyDate()).orElseThrow(CStudyLogNotFoundException::new);
         studyLogRepository.delete(studyLog);

@@ -27,7 +27,7 @@ public class UserSignupRequestDto {
     @Schema(title = "role", description = "Role")
     private Role role;
 
-    public User toEntity(PasswordEncoder passwordEncoder){
+    public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .id(id)
                 .passwd(passwordEncoder.encode(passwd))

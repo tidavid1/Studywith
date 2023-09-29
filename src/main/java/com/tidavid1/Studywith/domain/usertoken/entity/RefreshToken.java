@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "refreshToken")
+@Table(name = "refresh_token")
 @Entity
 public class RefreshToken {
     @Id
@@ -25,12 +25,12 @@ public class RefreshToken {
     @Column(nullable = false)
     private LocalDate createdDate;
 
-    public void updateToken(String refreshToken){
+    public void updateToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
     @Builder
-    public RefreshToken(Long refreshTokenKey, String refreshToken, LocalDate createdDate){
+    public RefreshToken(Long refreshTokenKey, String refreshToken, LocalDate createdDate) {
         this.refreshTokenKey = refreshTokenKey;
         this.refreshToken = refreshToken;
         this.createdDate = createdDate;

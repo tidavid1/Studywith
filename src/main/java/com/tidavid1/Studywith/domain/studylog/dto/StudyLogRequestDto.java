@@ -18,7 +18,7 @@ public class StudyLogRequestDto {
     private String studyNote;
     private LocalDate studyDate;
 
-    public StudyLog toEntity(Teaching teaching){
+    public StudyLog toEntity(Teaching teaching) {
         return StudyLog.builder()
                 .teaching(teaching)
                 .studyNote(studyNote)

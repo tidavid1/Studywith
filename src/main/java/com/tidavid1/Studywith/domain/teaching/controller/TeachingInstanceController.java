@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name="TeachingInstanceController")
+@Tag(name = "TeachingInstanceController")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/teachingInstance")
@@ -30,9 +30,8 @@ public class TeachingInstanceController {
     @Operation(summary = "수업 Instance 시작", description = "수업 Instance를 시작합니다.")
     @GetMapping("/start/{teachingId}")
     public SingleResult<TeachingInstanceResponseDto> startInstance(
-            @RequestHeader("X-AUTH-TOKEN") String accessToken,
-            @Parameter(description = "teachingId", required = true) @PathVariable Long teachingId){
-        return ResponseFactory.getSingleResult(teachingInstanceService.startTeachingInstance(accessToken,teachingId));
+            @Parameter(description = "teachingId", required = true) @PathVariable Long teachingId) {
+        return ResponseFactory.getSingleResult(teachingInstanceService.startTeachingInstance(teachingId));
     }
 
     @Parameter(
@@ -44,9 +43,8 @@ public class TeachingInstanceController {
     @Operation(summary = "수업 Instance 중지", description = "수업 Instance를 중지합니다.")
     @GetMapping("/stop/{teachingId}")
     public CommonResult stopInstance(
-            @RequestHeader("X-AUTH-TOKEN") String accessToken,
-            @Parameter(description = "teachingId", required = true) @PathVariable Long teachingId){
-        teachingInstanceService.stopTeachingInstance(accessToken,teachingId);
+            @Parameter(description = "teachingId", required = true) @PathVariable Long teachingId) {
+        teachingInstanceService.stopTeachingInstance(teachingId);
         return ResponseFactory.getSuccessResult();
     }
 
@@ -59,9 +57,8 @@ public class TeachingInstanceController {
     @Operation(summary = "수업 Instance 종료", description = "수업 Instance를 종료합니다.")
     @GetMapping("/terminate/{teachingId}")
     public CommonResult terminateInstance(
-            @RequestHeader("X-AUTH-TOKEN") String accessToken,
-            @Parameter(description = "teachingId", required = true) @PathVariable Long teachingId){
-        teachingInstanceService.terminateTeachingInstance(accessToken, teachingId);
+            @Parameter(description = "teachingId", required = true) @PathVariable Long teachingId) {
+        teachingInstanceService.terminateTeachingInstance(teachingId);
         return ResponseFactory.getSuccessResult();
     }
 }

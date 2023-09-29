@@ -13,7 +13,7 @@ public class TokenRequestDto {
     String refreshToken;
 
     @Builder
-    public TokenRequestDto(String accessToken, String refreshToken){
+    public TokenRequestDto(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

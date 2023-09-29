@@ -21,11 +21,11 @@ public class Teaching {
     private Long teachingId;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(referencedColumnName = "userId")
+    @JoinColumn(referencedColumnName = "user_id")
     private User teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(referencedColumnName = "userId")
+    @JoinColumn(referencedColumnName = "user_id")
     private User student;
 
     @Column
@@ -41,11 +41,11 @@ public class Teaching {
     @Enumerated(EnumType.ORDINAL)
     private Language language;
 
-    public void updateEndDate(LocalDate endDate){
+    public void updateEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    public void terminateInstanceId(){
+    public void terminateInstanceId() {
         this.instanceId = null;
     }
 }

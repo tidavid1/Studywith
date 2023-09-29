@@ -6,7 +6,7 @@ import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundExcepti
 import com.tidavid1.Studywith.domain.teaching.repository.TeachingRepository;
 import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
-import com.tidavid1.Studywith.domain.usertoken.config.JwtProvider;
+import com.tidavid1.Studywith.domain.usertoken.config.TokenProvider;
 import com.tidavid1.Studywith.domain.usertoken.exception.CAccessDeniedException;
 import com.tidavid1.Studywith.domain.usertoken.exception.CAccessTokenInvalidException;
 import com.tidavid1.Studywith.global.config.AWSProvider;
@@ -19,40 +19,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TeachingInstanceService {
     private final TeachingRepository teachingRepository;
-    private final JwtProvider jwtProvider;
+    private final TokenProvider tokenProvider;
     private final AWSProvider awsProvider;
 
-    private Authentication getAuthByAccessToken(String accessToken) {
-        if (!jwtProvider.validationToken(accessToken)) {
-            throw new CAccessTokenInvalidException();
-        }
-        return jwtProvider.getAuthentication(accessToken);
-    }
+
 
     @Transactional
-    public TeachingInstanceResponseDto startTeachingInstance(String accessToken, Long teachingId){
-        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_Student)){
-            throw new CAccessDeniedException();
-        }
+    public TeachingInstanceResponseDto startTeachingInstance(Long teachingId){
         Teaching teaching = teachingRepository.findByTeachingId(teachingId).orElseThrow(CTeachingNotFoundException::new);
         String publicIpAddress = awsProvider.startEC2Instance(teaching.getInstanceId());
         return new TeachingInstanceResponseDto(teachingId, teaching.getInstanceId(), publicIpAddress);
     }
 
     @Transactional
-    public void stopTeachingInstance(String accessToken, Long teachingId){
-        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_Student)){
-            throw new CAccessDeniedException();
-        }
+    public void stopTeachingInstance(Long teachingId){
         Teaching teaching = teachingRepository.findByTeachingId(teachingId).orElseThrow(CTeachingNotFoundException::new);
         awsProvider.stopEC2Instance(teaching.getInstanceId());
     }
 
     @Transactional
-    public void terminateTeachingInstance(String accessToken, Long teachingId){
-        if(((User) getAuthByAccessToken(accessToken).getPrincipal()).getRole().equals(Role.ROLE_Student)){
-            throw new CAccessDeniedException();
-        }
+    public void terminateTeachingInstance(Long teachingId){
         Teaching teaching = teachingRepository.findByTeachingId(teachingId).orElseThrow(CTeachingNotFoundException::new);
         awsProvider.terminateEC2Instance(teaching.getInstanceId());
         teaching.terminateInstanceId();

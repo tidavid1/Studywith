@@ -16,7 +16,6 @@ public interface TeachingRepository extends JpaRepository<Teaching, Long> {
     @Query(value = "select t from Teaching t where t.teachingId = :teachingId")
     Optional<Teaching> findByTeachingId(@Param("teachingId") Long teachingId);
 
-    // select t from Teaching t where t.teachingId
     @Query(value = "select t from Teaching t where t.teacher = :teacherId and t.student = :studentId")
     Optional<Teaching> findByStudentId(@Param("teacherId") User teacherId, @Param("studentId") User studentId);
 

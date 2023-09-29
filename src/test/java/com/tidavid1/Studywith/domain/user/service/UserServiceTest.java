@@ -36,14 +36,12 @@ class UserServiceTest {
 
     private Long expectedUserId;
     private User expectedUser;
-    private TokenDto tokenDto;
 
     @BeforeEach
     void setup(){
         UserSignupRequestDto userSignupRequestDto = new UserSignupRequestDto("test", "test!", "홍길동", "010-1111-1111", Role.ROLE_Teacher);
         expectedUser = userSignupRequestDto.toEntity(passwordEncoder);
         expectedUserId = userSignService.signup(userSignupRequestDto);
-        tokenDto = userSignService.login(UserLoginRequestDto.builder().id("test").passwd("test!").build());
     }
 
     @AfterEach
@@ -56,7 +54,7 @@ class UserServiceTest {
     @Test
     void testFindByUserIdSuccess() {
         // Act
-        UserResponseDto actualUserResponseDto = userService.findByUserId(tokenDto.getAccessToken(),expectedUserId);
+        UserResponseDto actualUserResponseDto = userService.findByUserId(expectedUserId);
         // Assert
         assertNotNull(actualUserResponseDto);
         assertEquals(expectedUserId, actualUserResponseDto.getUserId());
@@ -69,14 +67,14 @@ class UserServiceTest {
     @Test
     void testFindByUserIdFailed(){
         // Act & Assert
-        assertThrows(CUserNotFoundException.class, ()->userService.findByUserId(tokenDto.getAccessToken(),Long.MAX_VALUE));
+        assertThrows(CUserNotFoundException.class, ()->userService.findByUserId(Long.MAX_VALUE));
     }
 
     @DisplayName("test findById Success")
     @Test
     void testFindByIdSuccess(){
         // Act
-        UserResponseDto actualUserResponseDto = userService.findById(tokenDto.getAccessToken(), expectedUser.getId());
+        UserResponseDto actualUserResponseDto = userService.findById(expectedUser.getId());
         // Assert
         assertNotNull(actualUserResponseDto);
         assertEquals(expectedUserId, actualUserResponseDto.getUserId());
@@ -90,14 +88,14 @@ class UserServiceTest {
     void testFindByIdFailed(){
         TokenDto tokenDto = userSignService.login(UserLoginRequestDto.builder().id("test").passwd("test!").build());
         // Act & Assert
-        assertThrows(CUserNotFoundException.class, ()-> userService.findById(tokenDto.getAccessToken(), "test1"));
+        assertThrows(CUserNotFoundException.class, ()-> userService.findById("test1"));
     }
 
     @DisplayName("Test findAllUser")
     @Test
     void findAllUser() {
         // Act & Assert
-        List<UserResponseDto> userResponseDtoList = userService.findAllUser(tokenDto.getAccessToken());
+        List<UserResponseDto> userResponseDtoList = userService.findAllUser();
         assertNotNull(userResponseDtoList);
         assertEquals(1, userResponseDtoList.size());
     }
@@ -107,13 +105,9 @@ class UserServiceTest {
     void testUpdatePhoneCall(){
         // Arrange
         UserRequestDto userRequestDto = new UserRequestDto("test", "홍길동","010-1234-5678", Role.ROLE_Teacher);
-        TokenDto tokenDto = userSignService.login(UserLoginRequestDto.builder()
-                        .id("test")
-                        .passwd("test!")
-                        .build());
         // Act
-        userService.updatePhoneCall(tokenDto.getAccessToken(), userRequestDto);
-        UserResponseDto actualUserResponseDto = userService.findByAccessToken(tokenDto.getAccessToken());
+        userService.updatePhoneCall(userRequestDto);
+        UserResponseDto actualUserResponseDto = userService.findById(userRequestDto.getId());
         // Assert
         assertEquals(expectedUserId, actualUserResponseDto.getUserId());
         assertEquals(userRequestDto.getPhoneCall(), actualUserResponseDto.getPhoneCall());

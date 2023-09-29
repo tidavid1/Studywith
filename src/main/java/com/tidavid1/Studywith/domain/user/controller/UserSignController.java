@@ -27,15 +27,15 @@ public class UserSignController {
     @PostMapping("/signup")
     public SingleResult<Long> signup(
             @Parameter(description = "Signup Request DTO", required = true)
-            @RequestBody UserSignupRequestDto userSignupRequestDto){
+            @RequestBody UserSignupRequestDto userSignupRequestDto) {
         return ResponseFactory.getSingleResult(userSignService.signup(userSignupRequestDto));
     }
 
     @Operation(summary = "Login", description = "로그인")
     @PostMapping("/login")
     public SingleResult<TokenDto> login(
-        @Parameter(description = "Login Request DTO", required = true)
-        @RequestBody UserLoginRequestDto userLoginRequestDto){
+            @Parameter(description = "Login Request DTO", required = true)
+            @RequestBody UserLoginRequestDto userLoginRequestDto) {
         return ResponseFactory.getSingleResult(userSignService.login(userLoginRequestDto));
     }
 
@@ -43,7 +43,7 @@ public class UserSignController {
     @PostMapping("/reissue")
     public SingleResult<TokenDto> reissue(
             @Parameter(description = "Token Request Dto", required = true)
-            @RequestBody TokenRequestDto tokenRequestDto){
+            @RequestBody TokenRequestDto tokenRequestDto) {
         return ResponseFactory.getSingleResult(userSignService.reissue(tokenRequestDto));
     }
 }

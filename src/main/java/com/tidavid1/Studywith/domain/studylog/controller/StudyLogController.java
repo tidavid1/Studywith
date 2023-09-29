@@ -24,7 +24,7 @@ public class StudyLogController {
     @PostMapping("")
     public SingleResult<Long> addStudyLog(
             @Parameter(description = "StudyLog Request Dto", required = true)
-            @RequestBody StudyLogRequestDto studyLogRequestDto){
+            @RequestBody StudyLogRequestDto studyLogRequestDto) {
         return ResponseFactory.getSingleResult(studyLogService.createStudyLog(studyLogRequestDto));
     }
 
@@ -32,7 +32,7 @@ public class StudyLogController {
     @PutMapping("/studyNote")
     public SingleResult<Long> updateStudyNote(
             @Parameter(description = "studyLogId", required = true) @RequestParam Long studyLogId,
-            @Parameter(description = "studyNote", required = true) @RequestParam String studyNote){
+            @Parameter(description = "studyNote", required = true) @RequestParam String studyNote) {
         StudyLogRequestDto studyLogRequestDto = StudyLogRequestDto.builder().studyNote(studyNote).build();
         return ResponseFactory.getSingleResult(studyLogService.updateStudyNote(studyLogId, studyLogRequestDto));
     }
@@ -41,7 +41,7 @@ public class StudyLogController {
     @DeleteMapping("")
     public CommonResult deleteStudyLog(
             @Parameter(description = "studyLogId", required = true)
-            @RequestBody StudyLogRequestDto studyLogRequestDto){
+            @RequestBody StudyLogRequestDto studyLogRequestDto) {
         studyLogService.removeStudyLog(studyLogRequestDto);
         return ResponseFactory.getSuccessResult();
     }
@@ -50,7 +50,7 @@ public class StudyLogController {
     @GetMapping("/studyLog")
     public ListResult<StudyLogResponseDto> getAllStudyLogWithTeaching(
             @Parameter(description = "teachingId")
-            @RequestParam Long teachingId){
+            @RequestParam Long teachingId) {
         return ResponseFactory.getListResult(studyLogService.getStudyLogWithTeaching(teachingId));
     }
 }
