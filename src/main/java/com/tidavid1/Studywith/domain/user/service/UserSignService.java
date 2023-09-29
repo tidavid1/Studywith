@@ -14,7 +14,6 @@ import com.tidavid1.Studywith.domain.usertoken.entity.RefreshToken;
 import com.tidavid1.Studywith.domain.usertoken.exception.CRefreshTokenInvalidException;
 import com.tidavid1.Studywith.domain.usertoken.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

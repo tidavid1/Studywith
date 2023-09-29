@@ -29,7 +29,6 @@ public class TokenProvider {
     @Value("${spring.jwt.issuer}")
     private String issuer;
     private JwtParser jwtParser;
-
     private final String GRANT_TYPE ="Bearer";
     private final long ACCESS_TOKEN_VALIDATION_HOURS = 1L;
 

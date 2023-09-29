@@ -11,6 +11,8 @@ import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.usertoken.exception.*;
 import com.tidavid1.Studywith.global.common.response.model.CommonResult;
 import com.tidavid1.Studywith.global.common.response.service.ResponseFactory;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -81,10 +83,10 @@ public class GlobalExceptionHandler {
         return ResponseFactory.getFailResult(ErrorCode.AccessDenied.getCode(), ErrorCode.AccessDenied.getMessage());
     }
 
-    @ExceptionHandler(CAccessTokenExpiredException.class)
+    @ExceptionHandler(ExpiredJwtException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult accessTokenExpiredException(HttpServletRequest request, CAccessTokenExpiredException e){
-        return ResponseFactory.getFailResult(ErrorCode.AccessTokenExpired.getCode(), ErrorCode.AccessTokenExpired.getMessage());
+    protected CommonResult ExpiredJwtException(HttpServletRequest request, ExpiredJwtException e){
+        return ResponseFactory.getFailResult(ErrorCode.ExpiredJwt.getCode(), ErrorCode.ExpiredJwt.getMessage());
     }
 
     @ExceptionHandler(CAccessTokenInvalidException.class)
@@ -93,10 +95,10 @@ public class GlobalExceptionHandler {
         return ResponseFactory.getFailResult(ErrorCode.AccessTokenInvalid.getCode(), ErrorCode.AccessTokenInvalid.getMessage());
     }
 
-    @ExceptionHandler(CAuthenticationEntryPointException.class)
+    @ExceptionHandler(MalformedJwtException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e){
-        return ResponseFactory.getFailResult(ErrorCode.AuthenticationEntryPoint.getCode(), ErrorCode.AuthenticationEntryPoint.getMessage());
+    protected CommonResult MalformedJwtException(HttpServletRequest request, MalformedJwtException e){
+        return ResponseFactory.getFailResult(ErrorCode.MalformedJwt.getCode(), ErrorCode.MalformedJwt.getMessage());
     }
 
     @ExceptionHandler(CRefreshTokenInvalidException.class)

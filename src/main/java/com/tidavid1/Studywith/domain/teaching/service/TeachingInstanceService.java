@@ -4,14 +4,9 @@ import com.tidavid1.Studywith.domain.teaching.dto.TeachingInstanceResponseDto;
 import com.tidavid1.Studywith.domain.teaching.entity.Teaching;
 import com.tidavid1.Studywith.domain.teaching.exception.CTeachingNotFoundException;
 import com.tidavid1.Studywith.domain.teaching.repository.TeachingRepository;
-import com.tidavid1.Studywith.domain.user.entity.Role;
-import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.usertoken.config.TokenProvider;
-import com.tidavid1.Studywith.domain.usertoken.exception.CAccessDeniedException;
-import com.tidavid1.Studywith.domain.usertoken.exception.CAccessTokenInvalidException;
 import com.tidavid1.Studywith.global.config.AWSProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

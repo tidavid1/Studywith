@@ -16,9 +16,9 @@ public enum ErrorCode {
     StudyLogNotFound(-1006, "수업 기록이 존재하지 않음"),
     StudyLogAlreadyExist(-1007, "수업 기록이 이미 존재"),
     AccessDenied(-1008, "권한 없는 리소스 요청"),
-    AccessTokenExpired(-1009, "Access Token 만료"),
+    ExpiredJwt(-1009, "Access Token 만료"),
     AccessTokenInvalid(-1010, "Access Token 에러"),
-    AuthenticationEntryPoint(-1011, "전달된 JWT가 정상이지 않음"),
+    MalformedJwt(-1011, "전달된 JWT가 정상이지 않음"),
     RefreshTokenInvalid(-1012, "Refresh Token 에러");
     private final int code;
     private final String message;
