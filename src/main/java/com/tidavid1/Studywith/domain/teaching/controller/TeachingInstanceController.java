@@ -8,11 +8,12 @@ import com.tidavid1.Studywith.global.common.response.model.SingleResult;
 import com.tidavid1.Studywith.global.common.response.service.ResponseFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "TeachingInstanceController")
 @RequiredArgsConstructor
@@ -21,12 +22,6 @@ import org.springframework.web.bind.annotation.*;
 public class TeachingInstanceController {
     private final TeachingInstanceService teachingInstanceService;
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
     @Operation(summary = "수업 Instance 시작", description = "수업 Instance를 시작합니다.")
     @GetMapping("/start/{teachingId}")
     public SingleResult<TeachingInstanceResponseDto> startInstance(
@@ -34,12 +29,6 @@ public class TeachingInstanceController {
         return ResponseFactory.getSingleResult(teachingInstanceService.startTeachingInstance(teachingId));
     }
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
     @Operation(summary = "수업 Instance 중지", description = "수업 Instance를 중지합니다.")
     @GetMapping("/stop/{teachingId}")
     public CommonResult stopInstance(
@@ -48,12 +37,6 @@ public class TeachingInstanceController {
         return ResponseFactory.getSuccessResult();
     }
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
     @Operation(summary = "수업 Instance 종료", description = "수업 Instance를 종료합니다.")
     @GetMapping("/terminate/{teachingId}")
     public CommonResult terminateInstance(
