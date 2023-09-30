@@ -11,8 +11,6 @@ import com.tidavid1.Studywith.domain.user.entity.Role;
 import com.tidavid1.Studywith.domain.user.entity.User;
 import com.tidavid1.Studywith.domain.user.exception.CUserNotFoundException;
 import com.tidavid1.Studywith.domain.user.repository.UserRepository;
-import com.tidavid1.Studywith.domain.usertoken.config.TokenProvider;
-import com.tidavid1.Studywith.domain.usertoken.exception.CAccessDeniedException;
 import com.tidavid1.Studywith.global.config.AWSProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,6 @@ import java.util.stream.Collectors;
 public class TeachingService {
     private final TeachingRepository teachingRepository;
     private final UserRepository userRepository;
-    private final TokenProvider tokenProvider;
     private final AWSProvider awsProvider;
 
 
@@ -59,13 +56,8 @@ public class TeachingService {
     }
 
     @Transactional
-    public List<TeachingResponseDto> findAllTeachingByTeacher(String accessToken, Long teacherId){
-        User user = (User) tokenProvider.getUserByToken(accessToken);
-        User teacher = switch (user.getRole()){
-            case ROLE_Teacher -> userRepository.findByUserId(user.getUserId()).orElseThrow(CUserNotFoundException::new);
-            case ROLE_ADMIN -> userRepository.findByUserId(teacherId).orElseThrow(CUserNotFoundException::new);
-            default -> throw new CAccessDeniedException();
-        };
+    public List<TeachingResponseDto> findAllTeachingByTeacher(Long teacherId){
+        User teacher = userRepository.findByUserId(teacherId).orElseThrow(CUserNotFoundException::new);
         return teachingRepository.findByTeacherId(teacher).stream().map(TeachingResponseDto::new).collect(Collectors.toList());
     }
 }

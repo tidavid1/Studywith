@@ -21,11 +21,11 @@ public class Teaching {
     private Long teachingId;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(referencedColumnName = "user_id")
+    @JoinColumn(referencedColumnName = "userId")
     private User teacher;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(referencedColumnName = "user_id")
+    @JoinColumn(referencedColumnName = "userId")
     private User student;
 
     @Column

@@ -16,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -30,12 +31,15 @@ public class SecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/api/signup")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/login")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/reissue")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/**")).hasAnyRole("ADMIN", "Teacher", "Student"))
+                        .requestMatchers(new AntPathRequestMatcher("/api/user")).hasAnyRole("ADMIN", "Teacher", "Student")
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).hasAnyRole("ADMIN", "Teacher"))
                 .addFilterBefore(
                         jwtAuthenticationFilter, BasicAuthenticationFilter.class
                 )
-                .exceptionHandling(handler ->
-                        handler.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .exceptionHandling(handler -> {
+                    handler.authenticationEntryPoint(jwtAuthenticationEntryPoint);
+                    handler.accessDeniedHandler(jwtAccessDeniedHandler);}
+                )
                 .build();
     }
 

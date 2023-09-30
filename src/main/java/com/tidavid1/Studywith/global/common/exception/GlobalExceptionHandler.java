@@ -16,6 +16,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -77,9 +78,9 @@ public class GlobalExceptionHandler {
         return ResponseFactory.getFailResult(ErrorCode.StudyLogAlreadyExist.getCode(), ErrorCode.StudyLogAlreadyExist.getMessage());
     }
 
-    @ExceptionHandler(CAccessDeniedException.class)
+    @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    protected CommonResult accessDeniedException(HttpServletRequest request, CAccessDeniedException e){
+    protected CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e){
         return ResponseFactory.getFailResult(ErrorCode.AccessDenied.getCode(), ErrorCode.AccessDenied.getMessage());
     }
 

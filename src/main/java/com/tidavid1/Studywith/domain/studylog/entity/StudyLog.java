@@ -22,7 +22,7 @@ public class StudyLog {
     private Long studyLogId;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Teaching.class)
-    @JoinColumn(referencedColumnName = "teaching_id")
+    @JoinColumn(referencedColumnName = "teachingId")
     private Teaching teaching;
 
     @Column(nullable = false)

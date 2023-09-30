@@ -37,12 +37,7 @@ public class UserController {
         return ResponseFactory.getSingleResult(userService.findByUserId(userId));
     }
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
+
     @Operation(summary = "id 기반 유저 단건 검색", description = "id(String)로 유저를 조회합니다.")
     @GetMapping("/id/{id}")
     public SingleResult<UserResponseDto> findUserById(
@@ -51,24 +46,14 @@ public class UserController {
         return ResponseFactory.getSingleResult(userService.findById(id));
     }
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
+
     @Operation(summary = "유저 전체 검색", description = "유저 전체를 조회합니다.")
     @GetMapping("/find")
     public ListResult<UserResponseDto> findAllUser() {
         return ResponseFactory.getListResult(userService.findAllUser());
     }
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
+
     @Operation(summary = "Role 유저 전체 검색", description = "Role에 따른 유저들을 조회합니다.")
     @GetMapping("/find/role/{role}")
     public ListResult<UserResponseDto> findRoleUsers(
@@ -77,18 +62,15 @@ public class UserController {
     }
 
 
-    @Parameter(
-            name = "X-AUTH-TOKEN",
-            description = "로그인 성공 후 AccessToken",
-            required = true,
-            schema = @Schema(type = "string"),
-            in = ParameterIn.HEADER)
     @Operation(summary = "유저 전화번호 갱신", description = "유저 전화번호를 갱신합니다.")
     @PutMapping("")
     public CommonResult updatePhoneCall(
-            @Parameter(description = "phoneCall", required = true) @RequestParam String phoneCall
-    ) {
-        UserRequestDto userRequestDto = UserRequestDto.builder().phoneCall(phoneCall).build();
+            @Parameter(description = "id", required = true) @RequestParam String id,
+            @Parameter(description = "phoneCall", required = true) @RequestParam String phoneCall) {
+        UserRequestDto userRequestDto = UserRequestDto.builder()
+                .id(id)
+                .phoneCall(phoneCall)
+                .build();
         userService.updatePhoneCall(userRequestDto);
         return ResponseFactory.getSuccessResult();
     }

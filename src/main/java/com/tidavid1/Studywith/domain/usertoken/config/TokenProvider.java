@@ -1,13 +1,13 @@
 package com.tidavid1.Studywith.domain.usertoken.config;
 
-import com.tidavid1.Studywith.domain.user.service.CustomUserDetailsService;
 import com.tidavid1.Studywith.domain.usertoken.dto.TokenDto;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -21,8 +21,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Component
 public class TokenProvider {
-    private final CustomUserDetailsService customUserDetailsService;
-
     @Value("${spring.jwt.secret}")
     private String secretKey;
 
@@ -64,6 +62,7 @@ public class TokenProvider {
                                 .setExpiration(Date.from(Instant.now().plus(refreshTokenValidationHours, ChronoUnit.HOURS)))
                                 .compact()
                 )
+                .accessTokenExpireDate(Date.from(Instant.now().plus(ACCESS_TOKEN_VALIDATION_HOURS, ChronoUnit.HOURS)).getTime())
                 .build();
     }
 
@@ -82,12 +81,13 @@ public class TokenProvider {
                                 .compact()
                 )
                 .refreshToken(refreshToken)
+                .accessTokenExpireDate(Date.from(Instant.now().plus(ACCESS_TOKEN_VALIDATION_HOURS, ChronoUnit.HOURS)).getTime())
                 .build();
     }
 
 
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+    public String[] resolveToken(HttpServletRequest request) {
+        return request.getHeader("Authorization").split(" ");
     }
 
     public boolean isValidateToken(String token) {
@@ -100,10 +100,6 @@ public class TokenProvider {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public UserDetails getUserByToken(String token) {
-        return customUserDetailsService.loadUserByUsername(validateTokenAndGetSubject(token).split(":")[0]);
     }
 
     public String validateTokenAndGetSubject(String token) {
