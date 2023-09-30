@@ -17,7 +17,7 @@ public class UserRequestDto {
     private String phoneCall;
     private Role role;
 
-    public User toEntity(){
+    public User toEntity() {
         return User.builder()
                 .id(id)
                 .name(name)

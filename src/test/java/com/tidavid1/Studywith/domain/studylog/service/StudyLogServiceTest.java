@@ -67,7 +67,7 @@ class StudyLogServiceTest {
                         .passwd("teacher!")
                         .build()
         ).getAccessToken();
-        teachingId = teachingService.createClass(accessToken,TeachingRequestDto.builder()
+        teachingId = teachingService.createClass(TeachingRequestDto.builder()
                 .teacherId(teacherId)
                 .studentId(studentId)
                 .startDate(LocalDate.now())

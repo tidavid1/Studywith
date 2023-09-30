@@ -16,7 +16,7 @@ public class UserResponseDto {
     private final Role role;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserResponseDto(User user){
+    public UserResponseDto(User user) {
         this.userId = user.getUserId();
         this.id = user.getId();
         this.name = user.getName();

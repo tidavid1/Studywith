@@ -17,7 +17,7 @@ public class TeachingResponseDto {
     private final LocalDate endDate;
     private final Language language;
 
-    public TeachingResponseDto(Teaching teaching){
+    public TeachingResponseDto(Teaching teaching) {
         this.teachingId = teaching.getTeachingId();
         this.teacher = new UserResponseDto(teaching.getTeacher());
         this.student = new UserResponseDto(teaching.getStudent());

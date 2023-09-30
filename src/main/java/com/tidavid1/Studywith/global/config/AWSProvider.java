@@ -32,7 +32,7 @@ public class AWSProvider {
     private Ec2Client ec2Client;
 
     @PostConstruct
-    private void init(){
+    private void init() {
         AwsCredentialsProvider awsCredentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey));
         ec2Client = Ec2Client.builder()
                 .region(Region.AP_NORTHEAST_1)
@@ -41,7 +41,7 @@ public class AWSProvider {
     }
 
 
-    public String createEC2Instance(){
+    public String createEC2Instance() {
         RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
                 .instanceType(InstanceType.T2_MICRO)
                 .imageId(ami)
@@ -55,7 +55,7 @@ public class AWSProvider {
         return runInstancesResponse.instances().get(0).instanceId();
     }
 
-    public String startEC2Instance(String instanceId){
+    public String startEC2Instance(String instanceId) {
         ec2Client.startInstances(
                 StartInstancesRequest.builder()
                         .instanceIds(instanceId)
@@ -64,23 +64,23 @@ public class AWSProvider {
         return getEC2InstanceInformation(instanceId);
     }
 
-    public String getEC2InstanceInformation(String instanceId){
+    public String getEC2InstanceInformation(String instanceId) {
         boolean ipAddrExist = false;
         String ipAddr = null;
-        while(!ipAddrExist){
+        while (!ipAddrExist) {
             DescribeInstancesResponse describeInstancesResponse = ec2Client.describeInstances(
                     DescribeInstancesRequest.builder()
                             .instanceIds(instanceId)
                             .build()
             );
             Instance instance = describeInstancesResponse.reservations().get(0).instances().get(0);
-            if (instance.publicIpAddress() != null){
+            if (instance.publicIpAddress() != null) {
                 ipAddrExist = true;
                 ipAddr = instance.publicIpAddress();
-            }else{
-                try{
+            } else {
+                try {
                     Thread.sleep(3000);
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
@@ -88,7 +88,7 @@ public class AWSProvider {
         return ipAddr;
     }
 
-    public void stopEC2Instance(String instanceId){
+    public void stopEC2Instance(String instanceId) {
         ec2Client.stopInstances(
                 StopInstancesRequest.builder()
                         .instanceIds(instanceId)
@@ -96,7 +96,7 @@ public class AWSProvider {
         );
     }
 
-    public void terminateEC2Instance(String instanceId){
+    public void terminateEC2Instance(String instanceId) {
         ec2Client.terminateInstances(
                 TerminateInstancesRequest.builder()
                         .instanceIds(instanceId)

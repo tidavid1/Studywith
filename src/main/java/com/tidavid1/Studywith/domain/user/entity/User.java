@@ -45,15 +45,15 @@ public class User implements UserDetails {
     private Boolean isActive;
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.isActive = this.isActive == null || this.isActive;
     }
 
-    public void deleteUser(){
+    public void deleteUser() {
         this.isActive = false;
     }
 
-    public void updatePhoneCall(String phoneCall){
+    public void updatePhoneCall(String phoneCall) {
         this.phoneCall = phoneCall;
     }
 

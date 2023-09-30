@@ -31,8 +31,8 @@ public class TeachingController {
             in = ParameterIn.HEADER)
     @Operation(summary = "수업 전체 검색", description = "수업 전체를 조회합니다.")
     @GetMapping("/find")
-    public ListResult<TeachingResponseDto> findAllTeaching(@RequestHeader("X-AUTH-TOKEN") String accessToken){
-        return ResponseFactory.getListResult(teachingService.findAllTeaching(accessToken));
+    public ListResult<TeachingResponseDto> findAllTeaching() {
+        return ResponseFactory.getListResult(teachingService.findAllTeaching());
     }
 
     @Parameter(
@@ -45,7 +45,7 @@ public class TeachingController {
     @GetMapping("/teacherId/{teacherId}")
     public ListResult<TeachingResponseDto> findAllTeachingByTeacher(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
-            @Parameter(description = "teacherId", required = true) @PathVariable Long teacherId){
+            @Parameter(description = "teacherId", required = true) @PathVariable Long teacherId) {
         return ResponseFactory.getListResult(teachingService.findAllTeachingByTeacher(accessToken, teacherId));
     }
 
@@ -58,10 +58,9 @@ public class TeachingController {
     @Operation(summary = "수업 추가", description = "수업 추가")
     @PostMapping("")
     public SingleResult<Long> addTeaching(
-            @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "Teaching Request Dto", required = true)
-            @RequestBody TeachingRequestDto teachingRequestDto){
-        return ResponseFactory.getSingleResult(teachingService.createClass(accessToken, teachingRequestDto));
+            @RequestBody TeachingRequestDto teachingRequestDto) {
+        return ResponseFactory.getSingleResult(teachingService.createClass(teachingRequestDto));
     }
 
     @Parameter(
@@ -73,10 +72,9 @@ public class TeachingController {
     @Operation(summary = "수업 종료일 지정", description = "수업 종료일 지정")
     @PutMapping("/endDate")
     public SingleResult<Long> updateEndDate(
-            @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @Parameter(description = "teachingId", required = true) @RequestParam Long teachingId,
-            @Parameter(description = "endDate", required = true) @RequestParam String endDateStr){
+            @Parameter(description = "endDate", required = true) @RequestParam String endDateStr) {
         TeachingRequestDto teachingRequestDto = TeachingRequestDto.builder().endDate(LocalDate.parse(endDateStr)).build();
-        return ResponseFactory.getSingleResult(teachingService.updateEndDate(accessToken, teachingId, teachingRequestDto));
+        return ResponseFactory.getSingleResult(teachingService.updateEndDate(teachingId, teachingRequestDto));
     }
 }

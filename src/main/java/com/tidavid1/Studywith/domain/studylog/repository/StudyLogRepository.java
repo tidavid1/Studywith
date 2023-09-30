@@ -14,11 +14,11 @@ import java.util.Optional;
 @Repository
 public interface StudyLogRepository extends JpaRepository<StudyLog, Long> {
     @Query("select s from StudyLog s where s.studyLogId = :studyLogId")
-    Optional<StudyLog> findByStudyLogId(@Param("studyLogId")Long studyLogId);
+    Optional<StudyLog> findByStudyLogId(@Param("studyLogId") Long studyLogId);
 
     @Query("select s from StudyLog s where s.teaching = :teaching")
-    List<StudyLog> findAllStudyLogWithTeaching(@Param("teaching")Teaching teaching);
+    List<StudyLog> findAllStudyLogWithTeaching(@Param("teaching") Teaching teaching);
 
     @Query("select s from StudyLog s where s.teaching = :teaching and s.studyDate = :studyDate")
-    Optional<StudyLog> findByTeachingWithStudyDate(@Param("teaching")Teaching teaching, @Param("studyDate")LocalDate studyDate);
+    Optional<StudyLog> findByTeachingWithStudyDate(@Param("teaching") Teaching teaching, @Param("studyDate") LocalDate studyDate);
 }

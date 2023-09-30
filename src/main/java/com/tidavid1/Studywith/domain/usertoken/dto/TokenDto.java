@@ -17,7 +17,7 @@ public class TokenDto {
     private String refreshToken;
     private Long accessTokenExpireDate;
 
-    public RefreshToken toEntity(User user){
+    public RefreshToken toEntity(User user) {
         return RefreshToken.builder()
                 .refreshTokenKey(user.getUserId())
                 .refreshToken(refreshToken)
